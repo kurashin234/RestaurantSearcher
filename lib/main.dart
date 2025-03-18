@@ -1,38 +1,54 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_searcher/api/call_api.dart';
 
-
-List<dynamic> data = [];
-
 void main() async {
-  data = await CallApi.getRestauranData();
   var app = MaterialApp(home: MyApp());
   var scope = ProviderScope(child:app);
 
   runApp(scope);
 }
 
+final shopDataProvider = FutureProvider<List<dynamic>>((ref) async{
+  return await CallApi.getRestauranData();
+});
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final shopDataAsync = ref.watch(shopDataProvider);
+
     return Scaffold(
       body:Center(
-        child:ListView(
-          children: [
-            ...data.map((shop) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.network(shop['logo_image']),
-              );
-            }),  // mapの結果をtoList()でリストに変換
-          ],
-        )
+        child: shopDataAsync.when(
+          data: ((data){
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...data.map((shop){
+                  return Image.network(shop['logo_image']);
+                })
+              ],
+            );
+          }), 
+          error: (err, stack) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('エラー: $err'),
+              ElevatedButton(
+                onPressed: () => ref.refresh(shopDataProvider),
+                child: Text('再試行'),
+              ),
+            ],
+          ), 
+          loading: () => CircularProgressIndicator(),
+        ),
       )
     );
   }
 }
+
+
+          
