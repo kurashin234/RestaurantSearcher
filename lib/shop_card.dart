@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 
 class ShopCard extends StatelessWidget {
-  ShopCard({
+  const ShopCard({
     super.key, 
     required this.logoImage, 
     required this.access, 
     required this.shopName
   });
 
-  String logoImage;
-  String access;
-  String shopName;
+  final String logoImage;
+  final String access;
+  final String shopName;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Image.network(logoImage),
-        Text(shopName),
-        Text(access),
+        Image.network(
+          logoImage,
+          width: 100,
+          height: 100,
+          fit: BoxFit.fill
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                shopName, 
+                style: TextStyle(color: Colors.black),
+              ),
+              Text(
+                access,
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

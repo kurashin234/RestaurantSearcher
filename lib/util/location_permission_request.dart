@@ -4,7 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 class RequestLocationPermission {
   static Future<LocationData> request() async {
     final location = Location();
-    // パーミッション確認
+    
     var status = await Permission.location.status;
     if (status.isDenied || status.isRestricted) {
       status = await Permission.location.request();
@@ -13,7 +13,6 @@ class RequestLocationPermission {
       }
     }
 
-    // GPSサービスが有効か確認
     bool serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
@@ -22,7 +21,6 @@ class RequestLocationPermission {
       }
     }
 
-    // 位置情報取得
     return await location.getLocation();
   }
 }
