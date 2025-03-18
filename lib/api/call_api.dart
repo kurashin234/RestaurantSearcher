@@ -7,7 +7,7 @@ import '../env/env.dart';
 class CallApi {
   static Future<dynamic> getRestauranData() async {
     final locationData = await RequestLocationPermission.request();
-    final url = Uri.parse('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${Env.key}&format=json&lat=${locationData.latitude}&lng=${locationData.longitude}&range=3');
+    final url = Uri.parse('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${Env.key}&format=json&lat=${locationData.latitude}&lng=${locationData.longitude}&range=2');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

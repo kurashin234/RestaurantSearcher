@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_searcher/api/call_api.dart';
+import 'package:restaurant_searcher/shop_card.dart';
 
 void main() async {
   var app = MaterialApp(home: MyApp());
@@ -28,7 +29,16 @@ class MyApp extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ...data.map((shop){
-                  return Image.network(shop['logo_image']);
+                  return TextButton(
+                    onPressed: () {
+                      print("test");
+                    },
+                    child: ShopCard(
+                      logoImage: shop['logo_image'], 
+                      access: shop['access'], 
+                      shopName: shop['name']
+                    ),
+                  );
                 })
               ],
             );
