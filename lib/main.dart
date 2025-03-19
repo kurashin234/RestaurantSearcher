@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restaurant_searcher/search_result.dart';
 import 'package:restaurant_searcher/shop_detail.dart';
+import 'package:restaurant_searcher/shop_search.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,17 +22,28 @@ final goRouter = GoRouter(
   routes:[
     GoRoute(
       path: '/',
-      pageBuilder: (context, state){
+      pageBuilder: (context, state) {
         return MaterialPage(
-          child: SearchResult(),
+          child: ShopSearch()
+        );
+      },
+    ),
+    GoRoute(
+      path: '/search_result',
+      pageBuilder: (context, state){
+        final int range = state.extra as int;
+        return MaterialPage(
+          child: SearchResult(range: range,),
         );
       }
     ),
     GoRoute(
       path: '/shop_detail',
       pageBuilder: (context, state){
+        final shopData = state.extra as Map;
+
         return MaterialPage(
-          child: ShopDetail(),
+          child: ShopDetail(shopData: shopData),
         );
       }
     )
