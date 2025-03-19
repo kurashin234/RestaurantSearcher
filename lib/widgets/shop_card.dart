@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_searcher/util/color.dart';
 
 class ShopCard extends StatelessWidget {
   const ShopCard({
@@ -19,7 +20,7 @@ class ShopCard extends StatelessWidget {
         color: Colors.white,
         border: Border.all(
           width: 3,
-          color: Color.fromARGB(255, 239, 237, 230)
+          color: AppColor.borderColor
         )
       ),
       child: Row(

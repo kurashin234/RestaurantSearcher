@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:restaurant_searcher/util/location_permission_request.dart';
 import '../env/env.dart';
 
 class CallApi {
-  static Future<dynamic> getRestauranData(int range) async {
-    final locationData = await RequestLocationPermission.request();
-    final url = Uri.parse('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${Env.key}&format=json&lat=${locationData.latitude}&lng=${locationData.longitude}&range=$range&count=100');
+  static Future<dynamic> getRestauranData(double lat, double lng, int range) async {
+    final url = Uri.parse('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${Env.key}&format=json&lat=$lat&lng=$lng&range=$range&count=100');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_searcher/util/color.dart';
 
 class ShopDetail extends StatelessWidget {
   const ShopDetail({super.key, required this.shopData});
@@ -7,6 +8,7 @@ class ShopDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.backgroudColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
