@@ -16,7 +16,7 @@ class SearchResult extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
               child: SearchBox(),
             ),
             Expanded(
@@ -42,7 +42,7 @@ class SearchResult extends ConsumerWidget {
                     );
                   })
                 ],
-              ),
+              )
             )
           ],
         ),

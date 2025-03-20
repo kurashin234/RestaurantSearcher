@@ -18,19 +18,31 @@ class ShopCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
         border: Border.all(
           width: 3,
           color: AppColor.borderColor
-        )
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.shadowColor,
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: Offset(1, 1),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            logoImage,
-            width: 100,
-            height: 100,
-            fit: BoxFit.fill
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
+            child: Image.network(
+              logoImage,
+              width: 100,
+              height: 100,
+              fit: BoxFit.fill
+            ),
           ),
           Expanded(
             child: Column(

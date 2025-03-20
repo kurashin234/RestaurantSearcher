@@ -61,7 +61,4 @@ class MyApp extends StatelessWidget {
       routeInformationProvider: goRouter.routeInformationProvider,
     );
   }
-}
-
-
-          
+}         

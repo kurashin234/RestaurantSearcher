@@ -9,7 +9,7 @@ class RequestLocationPermission {
     if (status.isDenied || status.isRestricted) {
       status = await Permission.location.request();
       if (!status.isGranted) {
-        throw Exception('位置情報の許可が必要です');
+        throw Exception();
       }
     }
 
@@ -17,7 +17,7 @@ class RequestLocationPermission {
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        throw Exception('GPSを有効にしてください');
+        throw Exception();
       }
     }
 
