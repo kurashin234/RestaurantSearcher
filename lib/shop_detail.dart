@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/image_slider.dart';
+import 'package:restaurant_searcher/widgets/shop_map.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
 
 class ShopDetail extends StatelessWidget {
@@ -10,6 +11,8 @@ class ShopDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     final List shopImages = [
       shopData['logo_image'], 
       shopData['photo']['mobile']['l'],
@@ -55,6 +58,13 @@ class ShopDetail extends StatelessWidget {
               ),
             ),
             Divider(color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SizedBox(
+                height: size.width * 0.7,
+                child: ShopMap(shopLat: shopData['lat'], shopLng: shopData['lng'],)
+              ),
+            )
           ],
         ),
       ),

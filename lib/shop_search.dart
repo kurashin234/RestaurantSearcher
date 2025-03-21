@@ -76,7 +76,7 @@ class ShopSearch extends ConsumerWidget {
                             lat = location.latitude as double;
                             lng = location.longitude as double;
                             gps = true;
-                        
+
                             return TextAndWidget(
                               text: "位置情報取得に成功しました", 
                               widget: Icon(
