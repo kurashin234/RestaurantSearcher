@@ -14,10 +14,14 @@ class ShopMap extends ConsumerWidget {
     super.key,
     required this.shopLat,
     required this.shopLng,
+    this.move = false,
+    this.function
   });
 
   final double shopLat;
   final double shopLng;
+  final bool move;
+  final dynamic function;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationAsync = ref.watch(locationProvider);
@@ -31,6 +35,10 @@ class ShopMap extends ConsumerWidget {
           options: MapOptions(
             initialCenter: LatLng(centerLat, centerLng), // Center the map over London
             initialZoom: 13,
+            interactionOptions: InteractionOptions(
+              flags: move ? InteractiveFlag.all : InteractiveFlag.none, // すべての操作を有効化・無効化
+            ),
+            onTap:(tapPosition, point) => function != null ? function() : null,
           ),
           children: [
             TileLayer( // Bring your own tiles
@@ -54,7 +62,7 @@ class ShopMap extends ConsumerWidget {
                   point: LatLng(location.latitude as double, location.longitude as double),
                   width: 40,
                   height: 40,
-                  child: const Icon(Icons.location_searching, color: Colors.blueAccent)
+                  child: const Icon(Icons.my_location, color: Colors.blueAccent)
                 )
               ],
             ),

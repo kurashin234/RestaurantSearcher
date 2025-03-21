@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/image_slider.dart';
 import 'package:restaurant_searcher/widgets/shop_map.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
 
-class ShopDetail extends StatelessWidget {
+final tapMapProvider = StateProvider((ref){
+  return false;
+});
+
+class ShopDetail extends ConsumerWidget {
   const ShopDetail({super.key, required this.shopData});
 
   final Map shopData;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tapMap = ref.watch(tapMapProvider);
     final Size size = MediaQuery.of(context).size;
 
     final List shopImages = [
@@ -24,49 +30,96 @@ class ShopDetail extends StatelessWidget {
         backgroundColor: AppColor.appBarColor,
       ),
       backgroundColor: AppColor.backgroudColor,
-      body: Center(
-        child: ListView(
-          children: [
-            ImageSlider(images: shopImages),
-            Center(
-              child: Text(
-                shopData['name'],
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      body: Stack(
+        children: [
+          Center(
+            child: ListView(
+              children: [
+                ImageSlider(images: shopImages),
+                Center(
+                  child: Text(
+                    shopData['name'],
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+                Divider(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(33, 5, 20, 5),
+                  child: TextAndWidget(
+                    text: '住所:', 
+                    widget: Expanded(child: Text(shopData['address'])),
+                    center: false,
+                    textInterval: 20,
+                  ),
+                ),
+                Divider(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
+                  child: TextAndWidget(
+                    text: "営業時間:", 
+                    widget: Expanded(child: Text(shopData['open'])),
+                    center: false,
+                    textInterval: 20,
+                  ),
+                ),
+                Divider(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    height: size.width * 0.7,
+                    child: ShopMap(
+                      shopLat: shopData['lat'], 
+                      shopLng: shopData['lng'],
+                      function: (){
+                        ref.read(tapMapProvider.notifier).state = true;
+                      }
+                    )
+                  ),
+                )
+              ],
             ),
-            Divider(color: Colors.black),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(33, 5, 20, 5),
-              child: TextAndWidget(
-                text: '住所:', 
-                widget: Expanded(child: Text(shopData['address'])),
-                center: false,
-                textInterval: 20,
-              ),
-            ),
-            Divider(color: Colors.black),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
-              child: TextAndWidget(
-                text: "営業時間:", 
-                widget: Expanded(child: Text(shopData['open'])),
-                center: false,
-                textInterval: 20,
-              ),
-            ),
-            Divider(color: Colors.black),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SizedBox(
-                height: size.width * 0.7,
-                child: ShopMap(shopLat: shopData['lat'], shopLng: shopData['lng'],)
-              ),
+          ),
+
+          if(tapMap)
+            Stack(
+              children: [
+                Container(
+                  color: Colors.black.withAlpha(125),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: SizedBox(
+                      height: size.height,
+                      child: ShopMap(
+                        shopLat: shopData['lat'], 
+                        shopLng: shopData['lng'], 
+                        move: true,
+                      )
+                    ),
+                  )
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      splashFactory: NoSplash.splashFactory,
+                      overlayColor: Colors.white.withAlpha(0),
+                    ),
+                    onPressed: (){
+                      ref.read(tapMapProvider.notifier).state = false;
+                    }, 
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                      size: 30
+                    )
+                  ),
+                )
+              ],
             )
-          ],
-        ),
+        ]
       ),
     );
   }
