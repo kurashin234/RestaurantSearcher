@@ -59,8 +59,10 @@ class SearchResult extends ConsumerWidget {
                   );
                 },
 
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
+                loading: () => Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.green,
+                  ),
                 ),
 
                 error: (error, stack) => const Center(child: Text('error')),

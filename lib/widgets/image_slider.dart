@@ -12,7 +12,6 @@ class ImageSlider extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final carouselCurrentIndex = ref.watch(carouselCurrentIndexProvider);
-    final Size size = MediaQuery.of(context).size;
 
     return Stack(
       children: [
@@ -46,8 +45,8 @@ class ImageSlider extends ConsumerWidget {
             children: images.map((path) {
               final int getIndex = images.indexOf(path);
               return Container(
-                width: 10,
-                height: 10,
+                width: 8,
+                height: 8,
                 margin: const EdgeInsets.symmetric(
                   vertical: 10.0, 
                   horizontal: 5.0
