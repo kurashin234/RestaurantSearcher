@@ -12,8 +12,9 @@ class ImageSlider extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final carouselCurrentIndex = ref.watch(carouselCurrentIndexProvider);
+    final Size size = MediaQuery.of(context).size;
 
-    return Column(
+    return Stack(
       children: [
         CarouselSlider(
           options: CarouselOptions(
@@ -22,13 +23,13 @@ class ImageSlider extends ConsumerWidget {
               ref.read(carouselCurrentIndexProvider.notifier).state = index;
             },
           ),
-          items: images.map((i) {
+          items: images.map((image) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  margin: EdgeInsets.symmetric(horizontal: 2.0),
                   child: Image.network(
-                    i,
+                    image,
                     fit: BoxFit.contain,
                   ),
                 );
@@ -36,25 +37,30 @@ class ImageSlider extends ConsumerWidget {
             );
           }).toList(),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: images.map((path) {
-            final int getIndex = images.indexOf(path);
-            return Container(
-              width: 10,
-              height: 10,
-              margin: const EdgeInsets.symmetric(
-                vertical: 10.0, 
-                horizontal: 5.0
-              ),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: carouselCurrentIndex == getIndex
-                  ? AppColor.activeIndicatorColor
-                  : AppColor.inactiveIndicatorColor
-              ),
-            );
-          }).toList(),
+        Positioned(
+          bottom: 7,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: images.map((path) {
+              final int getIndex = images.indexOf(path);
+              return Container(
+                width: 10,
+                height: 10,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0, 
+                  horizontal: 5.0
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: carouselCurrentIndex == getIndex
+                    ? AppColor.activeIndicatorColor
+                    : AppColor.inactiveIndicatorColor
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );

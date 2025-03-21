@@ -26,9 +26,9 @@ class ShopCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: AppColor.shadowColor,
-            spreadRadius: 3,
-            blurRadius: 7,
-            offset: Offset(1, 1),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: Offset(0, 1),
           ),
         ],
       ),
@@ -60,10 +60,20 @@ class ShopCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 10, 15),
+                  padding: const EdgeInsets.fromLTRB(11, 0, 0, 3),
+                  child: Text(
+                    'アクセス:',
+                    style: TextStyle(
+                      color: AppColor.informationColor,
+                      fontSize: 12
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 15),
                   child: Text(
                     access,
-                    style: TextStyle(color: const Color.fromARGB(255, 77, 77, 77)),
+                    style: TextStyle(color: AppColor.informationColor),
                   ),
                 ),
               ],

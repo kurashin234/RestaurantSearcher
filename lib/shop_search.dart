@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
-import 'package:restaurant_searcher/api/call_api.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/util/location_permission_request.dart';
+import 'package:restaurant_searcher/util/search_range.dart';
 import 'package:restaurant_searcher/widgets/research_scope.dart';
 import 'package:restaurant_searcher/widgets/search_button.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
@@ -13,34 +13,16 @@ final locationProvider = FutureProvider<LocationData>((ref){
   return RequestLocationPermission.request();
 });
 
-final isLoadProvider = StateProvider((ref){
-  return false;
-});
-
-final errorProvider = StateProvider((ref){
-  return false;
-});
-
 final rangeProvider = StateProvider<dynamic>((ref){
   return null;
 });
 
 class ShopSearch extends ConsumerWidget {
-  ShopSearch({super.key});
-  
-  final ranges = [
-    {"id": 1, "range": 300},
-    {"id": 2, "range": 500},
-    {"id": 3, "range": 1000},
-    {"id": 4, "range": 2000},
-    {"id": 5, "range": 3000},
-  ];
+  const ShopSearch({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationAsync = ref.watch(locationProvider);
-    final isLoad = ref.watch(isLoadProvider);
-    final error = ref.watch(errorProvider);
     final range = ref.watch(rangeProvider);
     final Size size = MediaQuery.of(context).size;
     double? lat;
@@ -135,7 +117,7 @@ class ShopSearch extends ConsumerWidget {
                         child: TextAndWidget(
                           text: "検索範囲 :", 
                           widget: ResearchScope(
-                            ranges: ranges, 
+                            ranges: SearchRange.ranges, 
                             function: (id){
                               ref.read(rangeProvider.notifier).state = id!;
                             },
@@ -147,19 +129,9 @@ class ShopSearch extends ConsumerWidget {
                         child: SizedBox(
                           width: size.width * 0.6,
                           child: SearchButton(
-                            onPressed: gps && range != null ? () async {
-                              ref.read(isLoadProvider.notifier).state = true;
-                              
-                              try {
-                                final data = await CallApi.getRestauranData(lat!, lng!, range!);
-                                if (context.mounted) {
-                                  context.push("/search_result", extra: data);
-                                }
-                              } catch (e) {
-                                ref.read(errorProvider.notifier).state = true;
-                              } finally {
-                                ref.read(isLoadProvider.notifier).state = false;
-                              }
+                            onPressed: gps && range != null ? () {
+                              final location = {"lat": lat, "lng": lng, "range": range};
+                              context.push("/search_result", extra: location);
                             } : null,
                             text: "検索"
                           ),
@@ -171,17 +143,6 @@ class ShopSearch extends ConsumerWidget {
               ],
             ),
           ),
-
-          if(isLoad)
-            Container(
-              color: Colors.black.withAlpha(200),
-              child: Center(
-                child: CircularProgressIndicator(),
-              )
-            ),
-          
-          if(error)
-            Text("errorが発生しました")
         ],
       )
     );
