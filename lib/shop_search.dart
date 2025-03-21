@@ -48,6 +48,11 @@ class ShopSearch extends ConsumerWidget {
     bool gps = false;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("近くの飲食店を検索"),
+        backgroundColor: AppColor.appBarColor,
+        centerTitle: true,
+      ),
       backgroundColor: AppColor.backgroudColor,
       body: Stack(
         children: [
@@ -55,15 +60,15 @@ class ShopSearch extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Text(
-                    "近くの飲食店を検索",
-                    style: TextStyle(
-                      fontSize: 25
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(30.0),
+                //   child: Text(
+                //     "近くの飲食店を検索",
+                //     style: TextStyle(
+                //       fontSize: 25
+                //     ),
+                //   ),
+                // ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -78,48 +83,52 @@ class ShopSearch extends ConsumerWidget {
                     ],
                   ),
                   width: size.width * 0.8,
+                  height: 250,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      locationAsync.when(
-                        data: ((location){
-                          lat = location.latitude as double;
-                          lng = location.longitude as double;
-                          gps = true;
-
-                          return TextAndWidget(
-                            text: "位置情報取得に成功しました", 
-                            widget: Icon(
-                                IconData(0xe15a, fontFamily: 'MaterialIcons'),
-                                color: Colors.green,
-                              )
-                          );
-                        }),
-
-                        error: (err, stack) {
-                          return TextAndWidget(
-                            text: "位置情報取得に失敗しました", 
-                            textColor: AppColor.errorColor,
-                            widget: Icon(
-                              Icons.error_outline,
-                              color: AppColor.errorColor,
-                            )
-                          );
-                        } ,
-
-                        loading: () { 
-                          return TextAndWidget(
-                            text: "位置情報を取得中", 
-                            widget: SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                        child: locationAsync.when(
+                          data: ((location){
+                            lat = location.latitude as double;
+                            lng = location.longitude as double;
+                            gps = true;
+                        
+                            return TextAndWidget(
+                              text: "位置情報取得に成功しました", 
+                              widget: Icon(
+                                  IconData(0xe15a, fontFamily: 'MaterialIcons'),
                                   color: Colors.green,
                                 )
+                            );
+                          }),
+                        
+                          error: (err, stack) {
+                            return TextAndWidget(
+                              text: "位置情報取得に失敗しました", 
+                              textColor: AppColor.errorColor,
+                              widget: Icon(
+                                Icons.error_outline,
+                                color: AppColor.errorColor,
                               )
-                          );
-                        }
+                            );
+                          } ,
+                        
+                          loading: () { 
+                            return TextAndWidget(
+                              text: "位置情報を取得中", 
+                              widget: SizedBox(
+                                  width: 15,
+                                  height: 15,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.green,
+                                  )
+                                )
+                            );
+                          }
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -134,7 +143,7 @@ class ShopSearch extends ConsumerWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
                         child: SizedBox(
                           width: size.width * 0.6,
                           child: SearchButton(

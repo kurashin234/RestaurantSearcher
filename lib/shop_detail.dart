@@ -35,15 +35,24 @@ class ShopDetail extends StatelessWidget {
               ),
             ),
             Divider(color: Colors.black),
-            TextAndWidget(
-              text: '住所:', 
-              widget: Text(shopData['address']),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(33, 5, 20, 5),
+              child: TextAndWidget(
+                text: '住所:', 
+                widget: Expanded(child: Text(shopData['address'])),
+                center: false,
+                textInterval: 20,
+              ),
             ),
             Divider(color: Colors.black),
-            TextAndWidget(
-              text: "営業時間:", 
-              widget: Expanded(child: Text(shopData['open'])),
-              center: false,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
+              child: TextAndWidget(
+                text: "営業時間:", 
+                widget: Expanded(child: Text(shopData['open'])),
+                center: false,
+                textInterval: 20,
+              ),
             ),
             Divider(color: Colors.black),
           ],
