@@ -7,6 +7,7 @@ class AppColor{
   static final searchColor = const Color.fromARGB(215, 255, 68, 0);
   static final appBarColor = Color.fromARGB(255, 252, 237, 214);
   static final shadowColor = Color.fromARGB(255, 164, 163, 161);
-  static final Color activeIndicatorColor = Color.fromRGBO(115, 137, 187, 1);
-  static final Color inactiveIndicatorColor = Color.fromRGBO(115, 137, 187, 0.4);
+  static final informationColor = Color.fromARGB(255, 77, 77, 77);
+  static final activeIndicatorColor = Color.fromRGBO(255, 255, 255, 1);
+  static final inactiveIndicatorColor = Color.fromRGBO(255, 255, 255, 1).withAlpha(200);
 }

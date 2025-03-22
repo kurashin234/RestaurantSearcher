@@ -7,7 +7,8 @@ class TextAndWidget extends StatelessWidget {
     required this.widget, 
     this.textColor = Colors.black,
     this.fontSize = 14,
-    this.center = true
+    this.center = true,
+    this.textInterval = 10
   });
 
   final String text;
@@ -15,13 +16,15 @@ class TextAndWidget extends StatelessWidget {
   final Color textColor;
   final double fontSize;
   final bool center;
+  final double textInterval;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: center ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.fromLTRB(0, 0, textInterval, 0),
           child: Text(
             text,
             style: TextStyle(

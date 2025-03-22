@@ -31,9 +31,9 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/search_result',
       pageBuilder: (context, state){
-        final shopData = state.extra as List;
+        final location = state.extra as Map;
         return MaterialPage(
-          child: SearchResult(shopData: shopData),
+          child: SearchResult(location: location),
         );
       }
     ),
