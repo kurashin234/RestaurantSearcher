@@ -41,13 +41,11 @@ class ShopDetail extends ConsumerWidget {
               child: ListView(
                 children: [
                   ImageSlider(images: shopImages),
-                  Center(
-                    child: Text(
-                      shopData['name'],
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Text(
+                    shopData['name'],
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   Divider(color: Colors.black),
@@ -98,7 +96,7 @@ class ShopDetail extends ConsumerWidget {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
-                          height: size.height * 0.8,
+                          height: size.height * 0.83,
                           child: ShopMap(
                             shopLat: shopData['lat'], 
                             shopLng: shopData['lng'], 
