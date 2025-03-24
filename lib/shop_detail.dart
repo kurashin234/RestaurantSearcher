@@ -26,7 +26,7 @@ class ShopDetail extends ConsumerWidget {
     
     return PopScope(
       canPop: true,
-      onPopInvoked: (bool didPop){
+      onPopInvokedWithResult: (didPop, result){
         ref.read(tapMapProvider.notifier).state = false;
       },
       child: Scaffold(
@@ -41,11 +41,14 @@ class ShopDetail extends ConsumerWidget {
               child: ListView(
                 children: [
                   ImageSlider(images: shopImages),
-                  Text(
-                    shopData['name'],
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      shopData['name'],
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Divider(color: Colors.black),
