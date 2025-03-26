@@ -15,4 +15,6 @@ class AppColor{
   static final activePagingColor = Color.fromARGB(255, 63, 68, 82);
   static final activePagingFontColor = Colors.white;
   static final inactivePagingFontColor = Colors.black;
+  static final indexSerchBoxcolor = Color.fromARGB(255, 162, 162, 162).withAlpha(50);
+  static final researchColor = Color.fromARGB(255, 120, 165, 228);
 }

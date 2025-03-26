@@ -1,9 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/image_slider.dart';
+import 'package:restaurant_searcher/widgets/open_google_maps.dart';
 import 'package:restaurant_searcher/widgets/shop_map.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 final tapMapProvider = StateProvider((ref){
   return false;
@@ -53,10 +57,18 @@ class ShopDetail extends ConsumerWidget {
                   ),
                   Divider(color: Colors.black),
                   Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
+                    child: TextAndWidget(
+                      text: "キャッチ:", 
+                      widget: Expanded(child: Text(shopData['catch']))
+                    ),
+                  ),
+                  Divider(color: Colors.black),
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(33, 5, 20, 5),
                     child: TextAndWidget(
                       text: '住所:', 
-                      widget: Expanded(child: Text(shopData['address'])),
+                      widget: OpenGoogleMaps(address: shopData['address']),
                       center: false,
                       textInterval: 20,
                     ),
