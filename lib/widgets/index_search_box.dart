@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_searcher/util/color.dart';
 
-class SearchBox extends StatelessWidget {
-  const SearchBox({super.key, required this.controller});
+class IndexSearchBox extends StatelessWidget {
+  const IndexSearchBox({super.key, required this.controller});
 
   final dynamic controller;
   @override
@@ -11,6 +11,8 @@ class SearchBox extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: 'キーワード・店名',
+        filled: true,
+        fillColor: AppColor.indexSerchBoxcolor,
         enabledBorder: outlineBorder(),
         focusedBorder: outlineBorder(),
         prefixIcon: Icon(Icons.search)
@@ -20,9 +22,9 @@ class SearchBox extends StatelessWidget {
 
   OutlineInputBorder outlineBorder(){
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(5),
       borderSide: BorderSide(
-        color: AppColor.borderColor,
+        color: Colors.transparent,
         width: 5,
       ),
     );

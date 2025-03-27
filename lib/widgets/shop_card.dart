@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_searcher/util/color.dart';
+import 'package:restaurant_searcher/widgets/tag.dart';
 
 class ShopCard extends StatelessWidget {
   const ShopCard({
     super.key, 
-    required this.logoImage, 
-    required this.access, 
-    required this.shopName
+    required this.shopData
   });
 
-  final String logoImage;
-  final String access;
-  final String shopName;
+  final Map shopData;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,7 @@ class ShopCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
             child: Image.network(
-              logoImage,
+              shopData['logo_image'],
               width: 100,
               height: 100,
               fit: BoxFit.fill
@@ -49,14 +46,31 @@ class ShopCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                   child: Text(
-                    shopName, 
+                    shopData['name'], 
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                       fontSize: 20
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Wrap(
+                    spacing: 5,
+                    runSpacing: 5,
+                    children: (){
+                      List<Widget> tagName = [];
+                      if(shopData['parking'].substring(0, 2) == 'あり') tagName.add(Tag(text: "駐車場あり",));
+                      if(shopData['free_drink'].substring(0, 2) == 'あり') tagName.add(Tag(text: "飲み放題",));
+                      if(shopData['free_food'].substring(0, 2) == 'あり') tagName.add(Tag(text: "食べ放題",));
+                      if(shopData['non_smoking'] == '全面禁煙' || shopData['non_smoking'] == '一部禁煙') tagName.add(Tag(text: "禁煙",));
+                      if(shopData['wifi'].substring(0, 2) == 'あり') tagName.add(Tag(text: "Wi-Fi",));
+
+                      return tagName;
+                    }(),
                   ),
                 ),
                 Padding(
@@ -72,7 +86,7 @@ class ShopCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 15),
                   child: Text(
-                    access,
+                    shopData['access'],
                     style: TextStyle(color: AppColor.informationColor),
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/util/location_permission_request.dart';
 
 final locationProvider = FutureProvider<LocationData>((ref){
@@ -79,7 +80,15 @@ class ShopMap extends ConsumerWidget {
         );
       }, 
     
-      error:(error, stackTrace) => Text('error'), 
+      error:(error, stackTrace) => Center(
+        child: Text(
+          '位置情報取得に失敗しました',
+          style: TextStyle(
+            fontSize: 18,
+            color: AppColor.errorColor
+          ),
+        )
+      ), 
     
       loading: () { 
         return Center(
