@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_searcher/util/color.dart';
@@ -6,7 +5,6 @@ import 'package:restaurant_searcher/widgets/image_slider.dart';
 import 'package:restaurant_searcher/widgets/open_google_maps.dart';
 import 'package:restaurant_searcher/widgets/shop_map.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 
 final tapMapProvider = StateProvider((ref){

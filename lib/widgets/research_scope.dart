@@ -27,9 +27,6 @@ class ResearchScope extends StatelessWidget {
       ),
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.all(Colors.white),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // 角を丸くする
-        )),
       ),
       textStyle: TextStyle(color: Colors.black),
       onSelected: function,

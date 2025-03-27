@@ -21,7 +21,6 @@ class RequestLocationPermission {
       }
     }
 
-    //throw Exception();
     return await location.getLocation();
   }
 }

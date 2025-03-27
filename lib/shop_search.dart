@@ -4,17 +4,18 @@ import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/util/location_permission_request.dart';
-import 'package:restaurant_searcher/util/search_range.dart';
 import 'package:restaurant_searcher/widgets/index_search_box.dart';
 import 'package:restaurant_searcher/widgets/research_button.dart';
 import 'package:restaurant_searcher/widgets/research_scope.dart';
 import 'package:restaurant_searcher/widgets/search_button.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
 
-final locationProvider = FutureProvider.autoDispose<LocationData>((ref){
-  ref.keepAlive();
+final locationProvider = FutureProvider<LocationData>((ref){
+  ref.watch(reloadProvider);
   return RequestLocationPermission.request();
 });
+
+final reloadProvider = StateProvider((ref) => 1);
 
 final rangeProvider = StateProvider<dynamic>((ref){
   return null;
@@ -26,14 +27,22 @@ final controllerProvider = Provider.autoDispose<TextEditingController>((ref) {
   return controller;
 });
 
-final focusNodeProvider = Provider.autoDispose<FocusNode>((ref) {
-  final focusNode = FocusNode();
-  ref.onDispose(() => focusNode.dispose());  
-  return focusNode;
+final focusNodeProvider = StateProvider<FocusNode>((ref) {
+  return FocusNode();
 });
 
+final locationDataProvider = StateProvider((ref) => {});
+
 class ShopSearch extends ConsumerWidget {
-  const ShopSearch({super.key});
+  ShopSearch({super.key});
+
+  final ranges = [
+    {"id": 1, "range": 300},
+    {"id": 2, "range": 500},
+    {"id": 3, "range": 1000},
+    {"id": 4, "range": 2000},
+    {"id": 5, "range": 3000},
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,8 +55,9 @@ class ShopSearch extends ConsumerWidget {
     double? lng;
     bool gps = false;
 
+    // 画面描画後にフォーカスを解除
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(focusNodeProvider).requestFocus();
+      focusNode.unfocus();
     });
 
     return GestureDetector(
@@ -126,8 +136,8 @@ class ShopSearch extends ConsumerWidget {
                                   height: 35,
                                   child: ResearchButton(
                                     onPressed: (){
-                                      ref.invalidate(locationProvider);
-                                      ref.read(locationProvider);
+                                      final reload = ref.watch(reloadProvider);
+                                      ref.read(reloadProvider.notifier).state = reload + 1;
                                     }
                                   )
                                 )
@@ -140,7 +150,7 @@ class ShopSearch extends ConsumerWidget {
                           child: TextAndWidget(
                             text: "検索範囲 :", 
                             widget: ResearchScope(
-                              ranges: SearchRange.ranges, 
+                              ranges: ranges, 
                               function: (id){
                                 ref.read(rangeProvider.notifier).state = id!;
                               },
@@ -154,7 +164,6 @@ class ShopSearch extends ConsumerWidget {
                             height: 50,
                             child: IndexSearchBox(
                               controller: controller, 
-                              focusNode: focusNode,
                             ),
                           ),
                         ),
@@ -164,8 +173,14 @@ class ShopSearch extends ConsumerWidget {
                             width: size.width * 0.6,
                             child: SearchButton(
                               onPressed: gps && range != null ? () {
-                                final location = {"lat": lat, "lng": lng, "range": range, "controller": controller, "focusNode": focusNode};
-                                context.push("/search_result", extra: location);
+                                ref.read(locationDataProvider.notifier).state = {
+                                  "lat": lat,
+                                  "lng": lng,
+                                  "range": range,
+                                  "controller": controller
+                                };
+                                FocusScope.of(context).unfocus();
+                                context.push("/search_result", extra: locationDataProvider);
                               } : null,
                               text: "検索"
                             ),

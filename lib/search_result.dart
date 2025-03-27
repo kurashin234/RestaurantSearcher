@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 import 'package:restaurant_searcher/api/call_api.dart';
 import 'package:restaurant_searcher/util/color.dart';
+import 'package:restaurant_searcher/util/location_permission_request.dart';
+import 'package:restaurant_searcher/widgets/error_dialog.dart';
 import 'package:restaurant_searcher/widgets/error_ui.dart';
 import 'package:restaurant_searcher/widgets/paging_ui.dart';
 import 'package:restaurant_searcher/widgets/search_box.dart';
+import 'package:restaurant_searcher/widgets/search_button.dart';
 import 'package:restaurant_searcher/widgets/shop_card.dart';
 import 'package:restaurant_searcher/widgets/tag.dart';
 
-final shopDataProvider = FutureProvider.family<dynamic, Map>((ref, location) {
+final shopDataProvider = FutureProvider.family<dynamic, dynamic>((ref, locationProvider) {
   final selectedFilters = ref.watch(isSelectedFilterProvider);
+  final location = ref.watch(locationProvider);
   return CallApi.getRestauranData(location['lat'], location['lng'], location['range'], location['controller'].text, selectedFilters);
+});
+
+final locationProvider = FutureProvider<LocationData>((ref){
+  return RequestLocationPermission.request();
 });
 
 final isSelectedFilterProvider = StateProvider((ref) {
@@ -23,12 +32,15 @@ final isSelectedFilterProvider = StateProvider((ref) {
     "Wi-Fi": false,
   };
 });
+
+final reserachProvider = StateProvider((ref) => false);
+
 final currentPageProvider = StateProvider<int>((ref) => 1);
 
 class SearchResult extends ConsumerWidget {
-  SearchResult({super.key, required this.location});
+  SearchResult({super.key, required this.locationDataProvider});
 
-  final Map location;
+  final dynamic locationDataProvider;
 
   final filterName = [
       "駐車場",
@@ -40,14 +52,16 @@ class SearchResult extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shopData = ref.watch(shopDataProvider(location));
+    final Size size = MediaQuery.of(context).size;
+    final locationData = ref.watch(locationDataProvider);
+    final shopData = ref.watch(shopDataProvider(locationDataProvider));
     final currentPage = ref.watch(currentPageProvider);
+    final research = ref.watch(reserachProvider);
     final itemsPerPage = 10;
     final pagingWidth = 40.0;
     final pagingHeight = 42.0;
     final scrollController = ScrollController();
-    final controller = location['controller'];
-    final focusNode = location['focusNode'];
+    final controller = locationData['controller'];
 
     return PopScope(
       canPop: true,
@@ -71,9 +85,62 @@ class SearchResult extends ConsumerWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: SearchBox(
-                    controller: controller,
-                    focusNode: focusNode,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.7,
+                        child: SearchBox(
+                          controller: controller,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: !research ? SizedBox(
+                          width: size.width * 0.2,
+                          height: 45,
+                          child: SearchButton(
+                            text: "検索", 
+                            onPressed: () {
+                              final location = ref.refresh(locationProvider.future);
+                              ref.read(reserachProvider.notifier).state = true;
+
+                              location.then((data){
+                                ref.read(locationDataProvider.notifier).update((state){
+                                  ref.read(reserachProvider.notifier).state = false;
+                                  return {
+                                    ...state,
+                                    'lat': data.latitude,
+                                    'lng': data.longitude
+                                  };
+                                });
+                                ref.read(currentPageProvider.notifier).state = 1;
+                              }).catchError((error){
+                                ref.read(reserachProvider.notifier).state = false;
+                                
+                                if (context.mounted){
+                                  showDialog(
+                                    context: context, 
+                                    builder: (_){
+                                      return ErrorDialog();
+                                    }
+                                  );
+                                }
+                              });
+                            }
+                          ),
+                        )
+                        : Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 SingleChildScrollView(
@@ -82,7 +149,7 @@ class SearchResult extends ConsumerWidget {
                     children: filterName.map((name) {
                       final isSelectedMap = ref.watch(isSelectedFilterProvider);
                       final isSelected = isSelectedMap[name] ?? false; // デフォルトは false
-
+    
                       return Padding(
                         padding: const EdgeInsets.all(8),
                         child: TextButton(
@@ -98,7 +165,6 @@ class SearchResult extends ConsumerWidget {
                                 name: !(state[name] ?? false) // 押したタグのみ切り替える
                               };
                             });
-                            ref.invalidate(shopDataProvider(location));
                             ref.read(currentPageProvider.notifier).state = 1;
                           },
                           child: Tag(
@@ -260,7 +326,12 @@ class SearchResult extends ConsumerWidget {
         
                     error: (error, stack) => ErrorUi(
                       onPressed:(){
-                        final _ = ref.invalidate(shopDataProvider(location));
+                        ref.read(locationDataProvider.notifier).state = {
+                          'lat': locationData['lat'],
+                          'lng': locationData['lng'],
+                          'range': locationData['range'],
+                          'controller': controller,
+                        };
                       }
                     ),
                   ),

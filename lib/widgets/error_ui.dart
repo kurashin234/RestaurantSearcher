@@ -5,7 +5,7 @@ import 'package:restaurant_searcher/widgets/research_button.dart';
 class ErrorUi extends StatelessWidget {
   const ErrorUi({super.key, required this.onPressed});
 
-  final onPressed;
+  final dynamic onPressed;
   @override
   Widget build(BuildContext context) {
     return Column(

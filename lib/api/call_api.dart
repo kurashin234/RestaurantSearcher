@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import '../env/env.dart';
@@ -20,7 +19,6 @@ class CallApi {
     'wifi': isSelectedFilter['Wi-Fi'] ? "1" : "0",
     if (keyword != null && keyword.isNotEmpty) 'keyword': keyword,  
   };
-  inspect(isSelectedFilter);
 
   // Uri.httpsでURLを構築
   final url = Uri.https(

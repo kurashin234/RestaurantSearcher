@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/tag.dart';
