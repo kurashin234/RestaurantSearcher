@@ -37,6 +37,10 @@ final reserachProvider = StateProvider((ref) => false);
 
 final currentPageProvider = StateProvider<int>((ref) => 1);
 
+class FirstBuild{
+  bool value = true; // 初回ビルドかどうかを判定するフラグ
+}
+
 class SearchResult extends ConsumerWidget {
   SearchResult({super.key, required this.locationDataProvider});
 
@@ -50,6 +54,7 @@ class SearchResult extends ConsumerWidget {
       "Wi-Fi",
     ];
 
+  final FirstBuild isFirstBuild = FirstBuild();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
@@ -62,6 +67,11 @@ class SearchResult extends ConsumerWidget {
     final pagingHeight = 42.0;
     final scrollController = ScrollController();
     final controller = locationData['controller'];
+
+    if (isFirstBuild.value) {
+      FocusScope.of(context).unfocus();
+      isFirstBuild.value = false; // 2回目以降は実行しない
+    }
 
     return PopScope(
       canPop: true,

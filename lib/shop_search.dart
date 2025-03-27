@@ -27,11 +27,11 @@ final controllerProvider = Provider.autoDispose<TextEditingController>((ref) {
   return controller;
 });
 
-final focusNodeProvider = StateProvider<FocusNode>((ref) {
-  return FocusNode();
-});
-
 final locationDataProvider = StateProvider((ref) => {});
+
+class FirstBuild{
+  bool value = true; // 初回ビルドかどうかを判定するフラグ
+}
 
 class ShopSearch extends ConsumerWidget {
   ShopSearch({super.key});
@@ -43,22 +43,22 @@ class ShopSearch extends ConsumerWidget {
     {"id": 4, "range": 2000},
     {"id": 5, "range": 3000},
   ];
-
+ 
+  final FirstBuild isFirstBuild = FirstBuild();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationAsync = ref.watch(locationProvider);
     final range = ref.watch(rangeProvider);
     final controller = ref.watch(controllerProvider);
-    final focusNode = ref.watch(focusNodeProvider);
     final Size size = MediaQuery.of(context).size;
     double? lat;
     double? lng;
     bool gps = false;
 
-    // 画面描画後にフォーカスを解除
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      focusNode.unfocus();
-    });
+    if (isFirstBuild.value) {
+      FocusScope.of(context).unfocus();
+      isFirstBuild.value = false; // 2回目以降は実行しない
+    }
 
     return GestureDetector(
       onTap: () {
@@ -179,7 +179,7 @@ class ShopSearch extends ConsumerWidget {
                                   "range": range,
                                   "controller": controller
                                 };
-                                FocusScope.of(context).unfocus();
+
                                 context.push("/search_result", extra: locationDataProvider);
                               } : null,
                               text: "検索"
