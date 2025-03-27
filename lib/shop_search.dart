@@ -107,7 +107,7 @@ class ShopSearch extends ConsumerWidget {
                               return TextAndWidget(
                                 text: "位置情報取得に成功しました", 
                                 widget: Icon(
-                                    IconData(0xe15a, fontFamily: 'MaterialIcons'),
+                                    const IconData(0xe15a, fontFamily: 'MaterialIcons'),
                                     color: Colors.green,
                                   )
                               );
