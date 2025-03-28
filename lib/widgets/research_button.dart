@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 
 class ResearchButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class ResearchButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         "再試行",
-        style: TextStyle(
+        style: GoogleFonts.notoSansJp(
           color: AppColor.researchColor
         ),
       ),

@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import '../env/env.dart';
 
+//グルメサーチAPIを呼び出すクラス
 class CallApi {
   static Future<dynamic> getRestauranData(double lat, double lng, int range, String? keyword, Map isSelectedFilter) async {
   final queryParams = {

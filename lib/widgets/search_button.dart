@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 
 class SearchButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class SearchButton extends StatelessWidget {
         )
       ),
       onPressed: onPressed,
-      child: Text(text),
+      child: Text(text, style: GoogleFonts.notoSansJp(),),
     );
   }
 }

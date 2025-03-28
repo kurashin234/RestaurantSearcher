@@ -19,7 +19,7 @@ class ImageSlider extends ConsumerWidget {
           options: CarouselOptions(
             height: 350.0,
             onPageChanged: (index, reason) {
-              ref.read(carouselCurrentIndexProvider.notifier).state = index;
+              ref.read(carouselCurrentIndexProvider.notifier).state = index; //表示されている画像番号を取得
             },
           ),
           items: images.map((image) {
@@ -38,7 +38,7 @@ class ImageSlider extends ConsumerWidget {
         ),
         Positioned(
           bottom: 7,
-          left: 0,
+          left: 0, //中心に配置するために左右に0を設定
           right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

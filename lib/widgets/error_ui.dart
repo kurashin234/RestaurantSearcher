@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/research_button.dart';
 
@@ -23,7 +24,7 @@ class ErrorUi extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Text(
             '情報の取得に失敗しました。',
-            style: TextStyle(
+            style: GoogleFonts.notoSansJp(
               color: AppColor.informationColor
             ),
           ),
@@ -32,7 +33,7 @@ class ErrorUi extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Text(
             'ネットワークを確認して再度お試しください。',
-            style: TextStyle(
+            style: GoogleFonts.notoSansJp(
               color: AppColor.informationColor
             ),
           ),

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/image_slider.dart';
 import 'package:restaurant_searcher/widgets/open_google_maps.dart';
 import 'package:restaurant_searcher/widgets/shop_map.dart';
 import 'package:restaurant_searcher/widgets/text_and_widget.dart';
 
-
-final tapMapProvider = StateProvider((ref){
-  return false;
-});
+//操作可能mapを表示するか管理
+final tapMapProvider = StateProvider((ref) => false);
 
 class ShopDetail extends ConsumerWidget {
   const ShopDetail({super.key, required this.shopData});
@@ -27,13 +26,14 @@ class ShopDetail extends ConsumerWidget {
     ];
     
     return PopScope(
+      //遷移前の画面に戻った際表示されているmapを閉じる
       canPop: true,
       onPopInvokedWithResult: (didPop, result){
         ref.read(tapMapProvider.notifier).state = false;
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(shopData['name']),
+          title: Text(shopData['name'], style: GoogleFonts.notoSansJp()),
           backgroundColor: AppColor.appBarColor,
         ),
         backgroundColor: AppColor.backgroudColor,
@@ -42,18 +42,23 @@ class ShopDetail extends ConsumerWidget {
             Center(
               child: ListView(
                 children: [
+                  //画像の表示
                   ImageSlider(images: shopImages),
+
+                  //店舗名の表示
                   Align(
                     alignment: Alignment.center,
                     child: Text(
                       shopData['name'],
-                      style: TextStyle(
+                      style: GoogleFonts.notoSansJp(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Divider(color: Colors.black),
+
+                  //キャッチコピーの表示
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
                     child: TextAndWidget(
@@ -62,6 +67,8 @@ class ShopDetail extends ConsumerWidget {
                     ),
                   ),
                   Divider(color: Colors.black),
+
+                  //住所の表示
                   Padding(
                     padding: const EdgeInsets.fromLTRB(33, 5, 20, 5),
                     child: TextAndWidget(
@@ -72,16 +79,20 @@ class ShopDetail extends ConsumerWidget {
                     ),
                   ),
                   Divider(color: Colors.black),
+
+                  //営業時間の表示
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 5, 20, 5),
                     child: TextAndWidget(
                       text: "営業時間:", 
-                      widget: Expanded(child: Text(shopData['open'])),
+                      widget: Expanded(child: Text(shopData['open'], style: GoogleFonts.notoSansJp())),
                       center: false,
                       textInterval: 20,
                     ),
                   ),
                   Divider(color: Colors.black),
+
+                  //mapの表示
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SizedBox(
@@ -90,6 +101,7 @@ class ShopDetail extends ConsumerWidget {
                         shopLat: shopData['lat'], 
                         shopLng: shopData['lng'],
                         function: (){
+                          //mapがタップされた際、操作可能なmapを表示する
                           ref.read(tapMapProvider.notifier).state = true;
                         }
                       )
@@ -98,7 +110,8 @@ class ShopDetail extends ConsumerWidget {
                 ],
               ),
             ),
-      
+
+            //mapがタップされた際、操作可能なmapを表示する
             if(tapMap)
               Stack(
                 children: [
@@ -119,6 +132,8 @@ class ShopDetail extends ConsumerWidget {
                       ),
                     )
                   ),
+
+                  //操作可能なmapを閉じるためのアイコンを表示
                   Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
