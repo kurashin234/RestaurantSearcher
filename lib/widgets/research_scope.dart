@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResearchScope extends StatelessWidget {
   const ResearchScope({
@@ -22,16 +23,12 @@ class ResearchScope extends StatelessWidget {
         );
       }).toList(),
       inputDecorationTheme: const InputDecorationTheme(
-        //border: InputBorder.none,
         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8)
       ),
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.all(Colors.white),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // 角を丸くする
-        )),
       ),
-      textStyle: TextStyle(color: Colors.black),
+      textStyle: GoogleFonts.notoSansJp(color: Colors.black),
       onSelected: function,
     );
   }

@@ -9,7 +9,7 @@ import 'package:restaurant_searcher/shop_search.dart';
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // ステータスバーの背景を透明
-    statusBarIconBrightness: Brightness.dark, // 時間やバッテリ残量の色を白に
+    statusBarIconBrightness: Brightness.dark, // 時間やバッテリ残量の色を黒に
   ));
   var app = MaterialApp(home: MyApp());
   var scope = ProviderScope(child:app);
@@ -31,9 +31,9 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/search_result',
       pageBuilder: (context, state){
-        final shopData = state.extra as List;
+        final locationDataProvider = state.extra;
         return MaterialPage(
-          child: SearchResult(shopData: shopData),
+          child: SearchResult(locationDataProvider: locationDataProvider),
         );
       }
     ),
