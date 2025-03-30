@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:restaurant_searcher/util/color.dart';
@@ -21,7 +22,7 @@ class ShopMap extends ConsumerWidget {
 
   final double shopLat;
   final double shopLng;
-  final bool move;
+  final bool move; //タップやドラッグ操作等の有効化と無効化
   final dynamic function;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,12 +30,13 @@ class ShopMap extends ConsumerWidget {
 
     return locationAsync.when(
       data: (location){
+        //現在地とお店との中心座標をとる
         final centerLat = (shopLat + location.latitude!.toDouble()) / 2;
         final centerLng = (shopLng + location.longitude!.toDouble()) / 2;
 
         return FlutterMap(
           options: MapOptions(
-            initialCenter: LatLng(centerLat, centerLng), // Center the map over London
+            initialCenter: LatLng(centerLat, centerLng), 
             initialZoom: 13,
             interactionOptions: InteractionOptions(
               flags: move ? InteractiveFlag.all : InteractiveFlag.none, // すべての操作を有効化・無効化
@@ -49,16 +51,14 @@ class ShopMap extends ConsumerWidget {
             ),
             MarkerLayer(
               markers: [
+                //お店の位置をマーク
                 Marker(
                   point: LatLng(shopLat, shopLng),
                   width: 40,
                   height: 40,
                   child: const Icon(Icons.location_pin, color: Colors.red, size: 40),
-                )
-              ],
-            ),
-            MarkerLayer(
-              markers: [
+                ),
+                //現在位置をマーク
                 Marker(
                   point: LatLng(location.latitude as double, location.longitude as double),
                   width: 40,
@@ -83,7 +83,7 @@ class ShopMap extends ConsumerWidget {
       error:(error, stackTrace) => Center(
         child: Text(
           '位置情報取得に失敗しました',
-          style: TextStyle(
+          style: GoogleFonts.notoSansJp(
             fontSize: 18,
             color: AppColor.errorColor
           ),
@@ -94,7 +94,7 @@ class ShopMap extends ConsumerWidget {
         return Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: Colors.green,
+            color: AppColor.appBarColor,
           ),
         );
       }

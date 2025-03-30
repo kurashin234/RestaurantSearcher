@@ -5,7 +5,7 @@ class AppColor{
   static final borderColor = Color.fromARGB(255, 239, 237, 230);
   static final errorColor = Colors.red;
   static final searchColor = Color.fromARGB(215, 255, 68, 0);
-  static final appBarColor = Color.fromARGB(255, 252, 237, 214);
+  static final appBarColor = Color.fromARGB(255, 219, 206, 185);
   static final shadowColor = Color.fromARGB(255, 164, 163, 161);
   static final informationColor = Color.fromARGB(255, 77, 77, 77);
   static final activeIndicatorColor = Color.fromRGBO(255, 255, 255, 1);

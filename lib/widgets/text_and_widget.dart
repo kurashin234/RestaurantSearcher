@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+//TextとWidgetを横並びに配置するためのwidget
 class TextAndWidget extends StatelessWidget {
   const TextAndWidget({
     super.key, 
@@ -15,7 +17,7 @@ class TextAndWidget extends StatelessWidget {
   final Widget widget;
   final Color textColor;
   final double fontSize;
-  final bool center;
+  final bool center; //中心に配置するか判定するflag
   final double textInterval;
 
   @override
@@ -27,7 +29,7 @@ class TextAndWidget extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(0, 0, textInterval, 0),
           child: Text(
             text,
-            style: TextStyle(
+            style: GoogleFonts.notoSansJp( //日本語のフォントを指定
               color: textColor,
               fontSize: fontSize
             ),

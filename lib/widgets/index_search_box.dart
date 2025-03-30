@@ -8,9 +8,10 @@ class IndexSearchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: false,
       controller: controller,
       decoration: InputDecoration(
-        hintText: 'キーワード・店名',
+        hintText: 'キーワード・店名(任意)',
         filled: true,
         fillColor: AppColor.indexSerchBoxcolor,
         enabledBorder: outlineBorder(),

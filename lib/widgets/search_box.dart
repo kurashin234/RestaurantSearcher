@@ -8,6 +8,7 @@ class SearchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: false,
       controller: controller,
       decoration: InputDecoration(
         hintText: 'キーワード・店名',

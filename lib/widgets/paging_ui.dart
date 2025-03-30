@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 
 class PagingUi extends StatelessWidget {
@@ -16,8 +17,9 @@ class PagingUi extends StatelessWidget {
   final String str;
   final dynamic onPressed;
   final Color color;
-  final bool isPagination;
+  final bool isPagination; //ページ番号ではなく「前へ」や「次へ」等の文字を入力する場合はtrueにする
   final Color paginationFontColor;
+
   @override 
   Widget build(BuildContext context) {
     final double fontSize = 16;
@@ -46,8 +48,8 @@ class PagingUi extends StatelessWidget {
         child: Text(
           str,
           style: isPagination 
-          ? TextStyle(color: paginationFontColor, fontSize: fontSize) 
-          :TextStyle(
+          ? GoogleFonts.notoSansJp(color: paginationFontColor, fontSize: fontSize) 
+          :GoogleFonts.notoSansJp(
             color: isSelected ? AppColor.activePagingFontColor : AppColor.inactivePagingFontColor,
             fontSize: fontSize
           ),

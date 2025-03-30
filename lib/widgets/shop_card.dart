@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_searcher/util/color.dart';
 import 'package:restaurant_searcher/widgets/tag.dart';
 
@@ -49,7 +50,7 @@ class ShopCard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                   child: Text(
                     shopData['name'], 
-                    style: TextStyle(
+                    style: GoogleFonts.notoSansJp(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                       fontSize: 20
@@ -62,6 +63,7 @@ class ShopCard extends StatelessWidget {
                     spacing: 5,
                     runSpacing: 5,
                     children: (){
+                      //駐車場・飲み放題・食べ放題・禁煙・Wi-Fiがあるならタグを表示する
                       List<Widget> tagName = [];
                       if(shopData['parking'].substring(0, 2) == 'あり') tagName.add(Tag(text: "駐車場あり",));
                       if(shopData['free_drink'].substring(0, 2) == 'あり') tagName.add(Tag(text: "飲み放題",));
@@ -77,7 +79,7 @@ class ShopCard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(11, 0, 0, 3),
                   child: Text(
                     'アクセス:',
-                    style: TextStyle(
+                    style: GoogleFonts.notoSansJp(
                       color: AppColor.informationColor,
                       fontSize: 12
                     ),
@@ -87,7 +89,7 @@ class ShopCard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 15),
                   child: Text(
                     shopData['access'],
-                    style: TextStyle(color: AppColor.informationColor),
+                    style: GoogleFonts.notoSansJp(color: AppColor.informationColor),
                   ),
                 ),
               ],

@@ -5,6 +5,7 @@ class RequestLocationPermission {
   static Future<LocationData> request() async {
     final location = Location();
     
+    // 位置情報の権限ステータスを取得
     var status = await Permission.location.status;
     if (status.isDenied || status.isRestricted) {
       status = await Permission.location.request();
@@ -13,6 +14,7 @@ class RequestLocationPermission {
       }
     }
 
+    // GPSが有効かどうか確認
     bool serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
