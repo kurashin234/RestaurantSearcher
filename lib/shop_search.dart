@@ -77,134 +77,130 @@ class ShopSearch extends ConsumerWidget {
           centerTitle: true,
         ),
         backgroundColor: AppColor.backgroudColor,
-        body: Stack(
-          children: [
-            Center(
-              //背景のboxを表示
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColor.shadowColor,
-                      spreadRadius: 5,
-                      blurRadius: 20,
-                      offset: Offset(1, 1),
-                    ),
-                  ],
+        body: Center(
+          //背景のboxを表示
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColor.shadowColor,
+                  spreadRadius: 5,
+                  blurRadius: 20,
+                  offset: Offset(1, 1),
                 ),
-                width: size.width * 0.8,
-                height: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    //位置情報の取得状況を表示
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      child: locationAsync.when(
-                        data: ((location){
-                          lat = location.latitude as double;
-                          lng = location.longitude as double;
-                          gps = true;
-
-                          //位置情報の取得に成功
-                          return TextAndWidget(
-                            text: "位置情報取得に成功しました", 
-                            widget: Icon(
-                                const IconData(0xe15a, fontFamily: 'MaterialIcons'),
-                                color: Colors.green,
-                              )
-                          );
-                        }),
-
-                        //位置情報取得中
-                        loading: () { 
-                          return TextAndWidget(
-                            text: "位置情報を取得中", 
-                            widget: SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.green,
-                                )
-                              )
-                          );
-                        },
-
-                        //位置情報の取得失敗
-                        error: (err, stack) {
-                          return TextAndWidget(
-                            text: "位置情報取得に失敗しました", 
-                            textColor: AppColor.errorColor,
-                            widget: SizedBox(
-                              width: 95,
-                              height: 35,
-                              child: ResearchButton(
-                                onPressed: (){
-                                  final reload = ref.watch(reloadProvider);
-                                  ref.read(reloadProvider.notifier).state = !reload;//リロードフラグを変更して再度位置情報を取得しなおす
-                                }
-                              )
-                            )
-                          );
-                        } ,
-                      ),
-                    ),
-                    
-                    //検索半径を指定するmenuの表示
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextAndWidget(
-                        text: "検索半径 :", 
-                        widget: ResearchScope(
-                          ranges: ranges, 
-                          function: (id){
-                            ref.read(rangeProvider.notifier).state = id!;//選択されたmenuのidを取得
-                          },
-                        ),
-                      ),
-                    ),
-
-                    //検索ボックスの表示
-                    Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: SizedBox(
-                        width: size.width * 0.65,
-                        height: 50,
-                        child: IndexSearchBox(
-                          controller: controller, 
-                        ),
-                      ),
-                    ),
-
-                    //検索ボタンの表示
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
-                      child: SizedBox(
-                        width: size.width * 0.6,
-                        child: SearchButton(
-                          onPressed: gps && range != null ? () {
-                            //locationDataの値を更新
-                            ref.read(locationDataProvider.notifier).state = {
-                              "lat": lat,
-                              "lng": lng,
-                              "range": range,
-                              "controller": controller
-                            };
-              
-                            context.push("/search_result", extra: locationDataProvider); //遷移先にlocationDataProviderを渡す
-                          } : null,
-                          text: "検索"
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-          ],
+            width: size.width * 0.8,
+            height: 300,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                //位置情報の取得状況を表示
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: locationAsync.when(
+                    data: ((location){
+                      lat = location.latitude as double;
+                      lng = location.longitude as double;
+                      gps = true;
+        
+                      //位置情報の取得に成功
+                      return TextAndWidget(
+                        text: "位置情報取得に成功しました", 
+                        widget: Icon(
+                            const IconData(0xe15a, fontFamily: 'MaterialIcons'),
+                            color: Colors.green,
+                          )
+                      );
+                    }),
+        
+                    //位置情報取得中
+                    loading: () { 
+                      return TextAndWidget(
+                        text: "位置情報を取得中", 
+                        widget: SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColor.appBarColor,
+                            )
+                          )
+                      );
+                    },
+        
+                    //位置情報の取得失敗
+                    error: (err, stack) {
+                      return TextAndWidget(
+                        text: "位置情報取得に失敗しました", 
+                        textColor: AppColor.errorColor,
+                        widget: SizedBox(
+                          width: 95,
+                          height: 35,
+                          child: ResearchButton(
+                            onPressed: (){
+                              final reload = ref.watch(reloadProvider);
+                              ref.read(reloadProvider.notifier).state = !reload;//リロードフラグを変更して再度位置情報を取得しなおす
+                            }
+                          )
+                        )
+                      );
+                    } ,
+                  ),
+                ),
+                
+                //検索半径を指定するmenuの表示
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextAndWidget(
+                    text: "検索半径 :", 
+                    widget: ResearchScope(
+                      ranges: ranges, 
+                      function: (id){
+                        ref.read(rangeProvider.notifier).state = id!;//選択されたmenuのidを取得
+                      },
+                    ),
+                  ),
+                ),
+        
+                //検索ボックスの表示
+                Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: SizedBox(
+                    width: size.width * 0.65,
+                    height: 50,
+                    child: IndexSearchBox(
+                      controller: controller, 
+                    ),
+                  ),
+                ),
+        
+                //検索ボタンの表示
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
+                  child: SizedBox(
+                    width: size.width * 0.6,
+                    child: SearchButton(
+                      onPressed: gps && range != null ? () {
+                        //locationDataの値を更新
+                        ref.read(locationDataProvider.notifier).state = {
+                          "lat": lat,
+                          "lng": lng,
+                          "range": range,
+                          "controller": controller
+                        };
+          
+                        context.push("/search_result", extra: locationDataProvider); //遷移先にlocationDataProviderを渡す
+                      } : null,
+                      text: "検索"
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         )
       ),
     );

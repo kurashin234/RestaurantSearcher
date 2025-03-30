@@ -94,7 +94,7 @@ class ShopMap extends ConsumerWidget {
         return Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: Colors.green,
+            color: AppColor.appBarColor,
           ),
         );
       }

@@ -156,7 +156,7 @@ class SearchResult extends ConsumerWidget {
                             width: 30,
                             height: 30,
                             child: CircularProgressIndicator(
-                              color: Colors.green,
+                              color: AppColor.appBarColor,
                             ),
                           ),
                         ),
@@ -353,7 +353,7 @@ class SearchResult extends ConsumerWidget {
         
                     loading: () => Center(
                       child: CircularProgressIndicator(
-                        color: Colors.green,
+                        color: AppColor.appBarColor,
                       ),
                     ),
                     
